@@ -1,0 +1,13 @@
+* {
+    padding: 0;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    background-color: #f5e9e9;
+}
+#scatterGraph {
+    margin: 50px auto;
+    width: 50%;
+}
