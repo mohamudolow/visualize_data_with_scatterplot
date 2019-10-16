@@ -1,7 +1,8 @@
 var url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json',
     width = 800,
     height = 600,
-    margin = {"top": 30, "right": 30, "bottom": 40, "left": 80};
+    margin = {"top": 30, "right": 30, "bottom": 40, "left": 80},
+    padding = 50;
 
 // define svg container
 var svg = d3.select("#scatterGraph")
@@ -17,10 +18,39 @@ svg.append("text")
     .text("Doping in Professional Bicycle Racing")
     .style("font-size", "150%");
 
+//define the range for the axes scale
+var x = d3.scaleLinear().range([0, width-(padding*2)]);
+var y = d3.scaleTime().range([0, height-(padding*2)]);
+
+//define the axes orientation
+var xAxis = d3.axisBottom(x).tickFormat(d3.format("d"));
+var yAxis = d3.axisLeft(y).tickFormat(d3.timeFormat("%M:%S"));
+
+
 // draw the  graph
 function scatterGraph(data) {
-    console.log(data[0].Year);
+    
+    //parse the data
+    data.forEach(d => {
+        var parsedTime = d.Time.split(":");
+        d.Time = new Date(1970, 0, 1, 0, parsedTime[0], parsedTime[1]);
+    });
+
+    //setup the domain for the axes scale
+    x.domain([d3.min(data, d => d.Year - 1), d3.max(data, d => d.Year + 1)]);
+    y.domain(d3.extent(data, d => d.Time));
+    
+    //append the x axis to the svg container
+    svg.append("g")
+        .attr("transform", "translate("+ padding + "," + (height-padding) + ")")
+        .call(xAxis);
+    
+    //append the y axis to the svg container
+    svg.append("g")
+        .attr("transform", "translate(" + padding + "," + padding +")")
+        .call(yAxis);
 }
+
 
 // load the data for drawing the graph
 d3.json(url).then(function(data) {
