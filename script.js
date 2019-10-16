@@ -29,7 +29,7 @@ var yAxis = d3.axisLeft(y).tickFormat(d3.timeFormat("%M:%S"));
 
 // draw the  graph
 function scatterGraph(data) {
-    
+
     //parse the data
     data.forEach(d => {
         var parsedTime = d.Time.split(":");
@@ -39,16 +39,28 @@ function scatterGraph(data) {
     //setup the domain for the axes scale
     x.domain([d3.min(data, d => d.Year - 1), d3.max(data, d => d.Year + 1)]);
     y.domain(d3.extent(data, d => d.Time));
-    
+
     //append the x axis to the svg container
     svg.append("g")
         .attr("transform", "translate("+ padding + "," + (height-padding) + ")")
         .call(xAxis);
-    
+
     //append the y axis to the svg container
     svg.append("g")
         .attr("transform", "translate(" + padding + "," + padding +")")
         .call(yAxis);
+
+    //plot the data on the graph
+    svg.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.Year)+padding)
+        .attr("cy", d => y(d.Time)+padding)
+        .attr("r", 8)
+        .style("fill", d => d.Doping == "" ? "#1abc9c" : "orange")
+        .style("stroke", "#232323")
+        .style("opacity", 0.7);
 }
 
 
