@@ -65,6 +65,13 @@ function scatterGraph(data) {
         .attr("transform", "translate("+ padding + "," + (height-padding) + ")")
         .call(xAxis);
     
+    // x axis label
+    svg.append('text')
+    .attr('x', width/2-50)
+    .attr('y', height-18)
+    .style('font-size', 15)
+    .text('Championship Year');
+    
     //append the y axis to the svg container
     svg.append("g")
         .attr("transform", "translate(" + padding + "," + padding +")")
