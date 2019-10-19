@@ -11,6 +11,12 @@ var svg = d3.select("#scatterGraph")
 .attr("height", height)
 .style("background", "gray");
 
+//define the 'div' for the tooltip
+var div = d3.select("body")
+.append("div")
+.attr("class", "tooltip")
+.style("opacity", 0);
+
 // set the title of the graph
 svg.append("text")
     .attr("x", width/2 - (margin.left * 2))
@@ -18,13 +24,27 @@ svg.append("text")
     .text("Doping in Professional Bicycle Racing")
     .style("font-size", "150%");
 
+var timeFormat = d3.timeFormat("%M:%S");
 //define the range for the axes scale
 var x = d3.scaleLinear().range([0, width-(padding*2)]);
 var y = d3.scaleTime().range([0, height-(padding*2)]);
 
 //define the axes orientation
 var xAxis = d3.axisBottom(x).tickFormat(d3.format("d"));
-var yAxis = d3.axisLeft(y).tickFormat(d3.timeFormat("%M:%S"));
+var yAxis = d3.axisLeft(y).tickFormat(timeFormat);
+
+//handle mouseover click event
+function handleMouseover(d) {
+    div.style("opacity", 0.9)
+        .style("left", (d3.event.pageX + padding/2) + "px")
+        .style("top", d3.event.pageY + "px")
+        .html("<p>" + d.Name + ",&nbsp;" + d.Nationality + "</p><p>Year:" + d.Year + "&nbsp;&nbsp;&nbsp;Time:" + timeFormat(d.Time) + "</p>" + (d.Doping ? ("<br><p>" + d.Doping +"</p") : ""));
+}
+
+//handle mouseout click event
+function handleMouseout(d) {
+    div.style("opacity", 0);
+}
 
 
 // draw the  graph
@@ -60,7 +80,9 @@ function scatterGraph(data) {
         .attr("r", 8)
         .style("fill", d => d.Doping == "" ? "#1abc9c" : "orange")
         .style("stroke", "#232323")
-        .style("opacity", 0.7);
+        .style("opacity", 0.7)
+        .on("mouseover", handleMouseover)
+        .on("mouseout", handleMouseout);
 }
 
 
