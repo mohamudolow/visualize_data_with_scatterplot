@@ -38,7 +38,7 @@ function handleMouseover(d) {
     div.style("opacity", 0.9)
         .style("left", (d3.event.pageX + padding/2) + "px")
         .style("top", d3.event.pageY + "px")
-        .html("<p>" + d.Name + ",&nbsp;" + d.Nationality + "</p><p>Year:" + d.Year + "&nbsp;&nbsp;&nbsp;Time:" + timeFormat(d.Time) + "</p>" + (d.Doping ? ("<br><p>" + d.Doping +"</p") : ""));
+        .html("<p>" + d.Name + ",&nbsp;" + d.Nationality + "</p><p>Year:" + d.Year + "&nbsp;&nbsp;&nbsp;Time:" + timeFormat(d.Time) + "&nbsp;&nbsp;&nbsp;Place:" + d.Place + "</p>" + (d.Doping ? ("<br><p>" + d.Doping +"</p") : ""));
 }
 
 //handle mouseout click event
