@@ -78,6 +78,9 @@ function scatterGraph(data) {
     .style('font-size', 15)
     .text('Time in Minutes');
     
+    // define color scale for the graph data
+    var color = d3.scaleOrdinal(d3.schemeSet1);
+    
     //plot the data on the graph
     svg.selectAll("circle")
         .data(data)
@@ -86,11 +89,36 @@ function scatterGraph(data) {
         .attr("cx", d => x(d.Year)+padding)
         .attr("cy", d => y(d.Time)+padding)
         .attr("r", 8)
-        .style("fill", d => d.Doping == "" ? "#1abc9c" : "orange")
+        .style("fill", d => color(d.Doping !== ""))
         .style("stroke", "#232323")
         .style("opacity", 0.7)
         .on("mouseover", handleMouseover)
         .on("mouseout", handleMouseout);
+    
+    // define legend for the graph
+    var legend = svg.selectAll(".legend")
+    .data(color.domain())
+    .enter()
+    .append("g")
+    .attr("class", "legend")
+    .attr("id", "legend")
+    .attr("transform", (d, i) => "translate(0, "+ (height/2 - i * 20) +")");
+    
+    // legend color scale
+    legend.append("rect")
+    .attr("x", width - 50)
+    .attr("width", 20)
+    .attr("height", 20)
+    .style("fill", color);
+    
+    // legend text
+    legend.append("text")
+    .attr("x", width - 55)
+    .attr("y", 10)
+    .attr("dy", ".35em")
+    .attr("text-anchor", "end")
+    .style("font-size", "15px")
+    .text(d => d ? "Riders with doping allegations" : "No doping allegations");
 }
 
 
