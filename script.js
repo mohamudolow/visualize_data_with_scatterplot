@@ -2,7 +2,7 @@ var url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/m
     width = 800,
     height = 600,
     margin = {"top": 30, "right": 30, "bottom": 40, "left": 80},
-    padding = 50;
+    padding = 60;
 
 // define svg container
 var svg = d3.select("#scatterGraph")
@@ -64,12 +64,20 @@ function scatterGraph(data) {
     svg.append("g")
         .attr("transform", "translate("+ padding + "," + (height-padding) + ")")
         .call(xAxis);
-
+    
     //append the y axis to the svg container
     svg.append("g")
         .attr("transform", "translate(" + padding + "," + padding +")")
         .call(yAxis);
-
+    
+    // y axis label
+    svg.append('text')
+    .attr('transform', 'rotate(-90)')
+    .attr('x', -300)
+    .attr('y', 18)
+    .style('font-size', 15)
+    .text('Time in Minutes');
+    
     //plot the data on the graph
     svg.selectAll("circle")
         .data(data)
