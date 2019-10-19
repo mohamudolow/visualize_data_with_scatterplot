@@ -11,3 +11,11 @@ body {
     margin: 50px auto;
     width: 50%;
 }
+div.tooltip {
+    position: absolute;
+    background-color: steelblue;
+    padding: 10px;
+    border: 0px;
+    border-radius: 15px;
+    pointer-events: none;
+}
